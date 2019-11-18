@@ -1,0 +1,7 @@
+matplotlib
+pandas
+xlrd
+bs4
+glob2
+selenium
+missingno
