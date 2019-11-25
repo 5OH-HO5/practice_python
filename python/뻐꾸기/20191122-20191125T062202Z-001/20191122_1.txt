@@ -1,0 +1,243 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[57]:
+
+
+youtube_dic={"title":["돼지고기 사러 마트 다녀왔습니다"
+                      ,"참 쉬운 김밥 만들자"
+                      ,"간단한 토스트 만들꺼다"]
+              ,"view_num":[1000000,600000,200000]}
+
+
+# In[58]:
+
+
+import pandas as pd
+
+
+# In[59]:
+
+
+youtube = pd.DataFrame(youtube_dic)
+youtube
+
+
+# In[60]:
+
+
+youtube["title"]
+
+
+# In[61]:
+
+
+youtube["title"][0]
+
+
+# In[62]:
+
+
+from konlpy.tag import Twitter
+
+
+# In[63]:
+
+
+twitter = Twitter()
+
+
+# In[64]:
+
+
+twitter.pos(youtube["title"][0])
+
+
+# In[65]:
+
+
+twitter.pos(youtube["title"][1])
+
+
+# In[66]:
+
+
+twitter.pos(youtube["title"][2])
+
+
+# In[67]:
+
+
+twitter.pos(youtube["title"][1],stem=True)
+
+
+# In[68]:
+
+
+twitter.pos(youtube["title"][2],stem=True)
+
+
+# In[69]:
+
+
+tagged=twitter.pos(youtube["title"][0],stem=True)
+tagged
+
+
+# In[70]:
+
+
+len(tagged)
+
+
+# In[71]:
+
+
+for i in range(0, len(tagged)):
+    print("tagged[{}]:{}".format(i,tagged[i]))
+    print("tagged[{}][1]:{}".format(i,tagged[i][1]))
+    print("tagged[{}][0]:{}".format(i,tagged[i][0]))
+
+
+# In[72]:
+
+
+for i in range(0, len(tagged)):
+    if tagged[i][1]=="Noun":
+        print("tagged[{}]:{}".format(i,tagged[i]))
+        print("tagged[{}][1]:{}".format(i,tagged[i][1]))
+        print("tagged[{}][0]:{}".format(i,tagged[i][0]))
+
+
+# In[73]:
+
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+# In[74]:
+
+
+youtube["view_num"]
+
+
+# In[75]:
+
+
+youtube["view_num"][0]
+
+
+# In[76]:
+
+
+youtube["view_num"][0]=600000
+
+
+# In[77]:
+
+
+youtube
+
+
+# In[78]:
+
+
+sns.factorplot("view_num",data=youtube, kind="count",size=5)
+
+
+# In[79]:
+
+
+import numpy as np
+youtube["view_num"][2]=np.nan
+youtube
+
+
+# In[80]:
+
+
+youtube=youtube.dropna(subset=["view_num"])
+youtube
+
+
+# In[81]:
+
+
+youtube.loc[2]=["참치 김밥만들기",40000]
+
+
+# In[82]:
+
+
+youtube
+
+
+# In[83]:
+
+
+youtube.loc[3]=["치즈가 많은 토스트",1000000]
+
+
+# In[84]:
+
+
+youtube
+
+
+# In[85]:
+
+
+youtube["view_num2"]=0
+
+
+# In[86]:
+
+
+youtube
+
+
+# In[87]:
+
+
+youtube["view_num"][2]
+
+
+# In[88]:
+
+
+youtube["view_num"][3]
+
+
+# In[89]:
+
+
+youtube["view_num2"][3]=2
+
+
+# In[91]:
+
+
+youtube
+
+
+# In[93]:
+
+
+for index in range(len(youtube)):
+    view_num=youtube["view_num"][index]
+    if (view_num<500000):
+        youtube["view_num2"][index]=0
+    elif (view_num<1000000): 
+        youtube["view_num2"][index]=1
+    else:
+        youtube["view_num2"][index]=2
+
+youtube
+
+
+# In[ ]:
+
+
+
+

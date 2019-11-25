@@ -1,0 +1,100 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[13]:
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import matplotlib as mpl
+mpl.rc('font',family='Malgun Gothic')
+from konlpy.tag import Twitter
+twitter=Twitter()
+
+
+# In[2]:
+
+
+youtube=pd.read_csv('C:/ai/workspace/python/191121/youtube.csv')
+youtube
+
+
+# In[5]:
+
+
+#품사 나누기
+tagged = twitter.pos(youtube['title'][0])
+tagged
+
+
+# In[6]:
+
+
+tagged = twitter.pos(youtube['title'][0], stem=True)
+tagged
+
+
+# In[9]:
+
+
+# Noun만 추출
+for i in range(0,len(tagged)):
+    if tagged[i][1]=='Noun':
+        print(tagged[i])
+
+
+# In[10]:
+
+
+for i in range(0,len(tagged)):
+    if tagged[i][1]=='Noun':
+        print(tagged[i][0])
+
+
+# In[19]:
+
+
+# 조회수 데이터 분포그래프 그리기
+graph_count=sns.factorplot('count',data=youtube,kind='count',size=30)
+graph_count
+
+
+# In[15]:
+
+
+# 조회수 Nan인 줄 삭제 후 새로운 열 추가
+youtube=youtube.dropna(subset=['count'])
+youtube['count2']=0
+youtube
+
+
+# In[16]:
+
+
+# 조회수 구간 나눠서 단순화
+for j in range(0,len(youtube)):
+    count=youtube['count'][j]
+    if count<500000:
+        youtube['count2'][j]=0
+    elif count<1000000:
+        youtube['count2'][j]=1
+    else:
+        youtube['count2'][j]=2
+youtube
+
+
+# In[25]:
+
+
+# 단순화된 조회수 데이터 분포그래프 그리기
+graph_count2=sns.catplot('count2', data=youtube, kind='count', height=4)
+graph_count2
+
+
+# In[ ]:
+
+
+
+

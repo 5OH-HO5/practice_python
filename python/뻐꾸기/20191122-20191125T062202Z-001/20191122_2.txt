@@ -1,0 +1,297 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[8]:
+
+
+word_list=[
+    "남자 남자 남자 밥을 먹는다",
+    "남자 남자 걷는다",
+    "남자 남자 남자",
+    "남자 남자 남자 남자",
+    "남자 남자 남자 여자 여자",
+    "남자 남자 남자 밥 밥 먹는다"
+]
+
+
+# In[9]:
+
+
+n=6
+
+
+# In[10]:
+
+
+import math
+
+
+# In[11]:
+
+
+#남자 IDF
+idf1=math.log((1+n)/(1+6))+1
+idf1
+
+
+# In[12]:
+
+
+#여자 IDF
+idf2=math.log((1+n)/(1+1))+1
+idf2
+
+
+# In[13]:
+
+
+#밥 IDF
+idf3=math.log((1+n)/(1+2))+1
+idf3
+
+
+# In[14]:
+
+
+word_list[0]
+
+
+# In[15]:
+
+
+#첫번째 문장 남자->숫자값 TF*IDF
+tfidf11=3*idf1
+tfidf11
+
+
+# In[17]:
+
+
+#첫번째 문장 밥 숫자값 ->TF*IDF
+tfidf13=1*idf3
+round(tfidf13, 4)
+
+
+# In[30]:
+
+
+import numpy as np
+
+
+# In[31]:
+
+
+np.array([3,0,1.8473])/np.sqrt(3*3+1.8473*1.8473)
+
+
+# In[32]:
+
+
+#TFIDF?
+#밥->0
+#남자 TFIDF?
+#여자 TFIDF?
+print("word_list[4]:",word_list[4])
+#남자의 TFIDF
+tfidf51=3*idf1
+print("word_list[4] 남자 TFIDF:",tfidf51)
+
+#여자의 TFIDF
+tfidf52=2*idf2
+print("word_list[4] 여자 TFIDF:",tfidf52)
+#남자 여자 TFIDF normilize
+print(
+    np.array([3, 4.5055, 0])/math.sqrt(pow(3,2)+pow(4.5055,2))
+)
+
+
+# In[33]:
+
+
+#TFIDF?
+#여자 ->TFIDF:0
+#남자 TFIDF?
+#밥 TDIDF ?
+print("word_list[5]:",word_list[5])
+#남자의 TFIDF
+tfidf61=3*idf1
+print("word_list[5] 남자 TFIDF:",tfidf61)
+
+#밥의 TFIDF
+tfidf63=2*idf3
+print("word_list[5] 밥 TFIDF:",tfidf63)
+#남자 밥 TFIDF normalize
+print(
+    np.array([3, 0, 3.6946])/np.sqrt(3*3+3.6946*3.6946)
+)
+
+
+# In[34]:
+
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+
+# In[35]:
+
+
+vectorlizer=TfidfVectorizer()
+
+
+# In[36]:
+
+
+X_train_vector=vectorlizer.fit_transform(word_list)
+
+
+# In[37]:
+
+
+X_train_vector.A
+
+
+# In[38]:
+
+
+vectorlizer.get_feature_names()
+
+
+# In[40]:
+
+
+import pandas as pd
+
+
+# In[41]:
+
+
+pd.DataFrame(
+    X_train_vector.A, 
+    columns=vectorlizer.get_feature_names())
+
+
+# In[42]:
+
+
+from konlpy.tag import Twitter
+twitter=Twitter()
+
+
+# In[45]:
+
+
+def getNounAndAdjective(text):
+    stems=[]
+    tagged=twitter.pos(text, stem=True)
+    print("tagged:",tagged)
+    for i in range(0, len(tagged)):
+        print("i=",i,
+              ":tagged[i]:",tagged[i])
+        if(tagged[i][1]=="Noun"):
+            stems.append(tagged[i][0])
+            
+    return stems
+
+
+# In[46]:
+
+
+getNounAndAdjective(
+    "아버지가 방에 들어가신다 슬프다 ")
+
+
+# In[47]:
+
+
+vectorlizer=TfidfVectorizer(
+    tokenizer=getNounAndAdjective)
+
+X_train_vector=vectorlizer.fit_transform(
+    word_list)
+
+
+# In[48]:
+
+
+pd.DataFrame(X_train_vector.A ,
+            columns=vectorlizer.get_feature_names())
+
+
+# In[49]:
+
+
+vectorlizer=TfidfVectorizer(
+    tokenizer=getNounAndAdjective, min_df=2)
+
+X_train_vector=vectorlizer.fit_transform(word_list)
+
+
+# In[50]:
+
+
+pd.DataFrame(X_train_vector.A ,
+            columns=vectorlizer.get_feature_names())
+
+
+# In[51]:
+
+
+youtube_dic={
+      "title":["t1","t2","t3","t4","t5"],
+      "view_num2":[1,2,3,4,5]     
+ }
+youtube=pd.DataFrame(youtube_dic)
+youtube
+
+
+# In[52]:
+
+
+from sklearn.model_selection import train_test_split
+
+
+# In[53]:
+
+
+train_test_split(
+     youtube["title"],youtube["view_num2"]
+)
+
+
+# In[54]:
+
+
+X_train, X_test, y_train, y_test = train_test_split(
+     youtube["title"],youtube["view_num2"]
+)
+
+
+# In[55]:
+
+
+X_train
+
+
+# In[56]:
+
+
+X_test
+
+
+# In[57]:
+
+
+y_train
+
+
+# In[58]:
+
+
+y_test
+
+
+# In[ ]:
+
+
+
+
