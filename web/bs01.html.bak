@@ -1,7 +1,10 @@
 <html>
+<<<<<<< HEAD
+=======
 	<head>
 		<meta charset="utf-8">
     </head>
+>>>>>>> f8471b54fe0d0311ab00b5d2460c68391b069a98
 	<body>
 		<h1>스크레이핑이란?</h1>
 		<p>웹 페이지를 분석하는 것</p>
