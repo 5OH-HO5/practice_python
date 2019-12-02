@@ -1,0 +1,4 @@
+네이버 오픈 API주소: https://developers.naver.com/apps/#/register?defaultScope=search
+
+ID:    htGbu9KOTEU69iArqr2A
+PW:   kUr1gumsmm
