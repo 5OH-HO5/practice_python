@@ -1,5 +1,7 @@
 ### 기본 명령어
 
+> 수정된 내용 확인
+
 > **pwd**
 
 - present working directory
