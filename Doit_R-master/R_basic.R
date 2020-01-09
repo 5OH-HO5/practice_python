@@ -345,6 +345,17 @@ y %*% solve(y) %*% c(1,2)
 t(x)
 x %*% t(x)
 
+# 공분산을 구하는데, 전치행렬을 사용할 수 있다.
+X <- sample(1:10, 15, T)
+mX <- matrix(X, nrow=5)
+mX
+N <- nrow(mX)
+meanedmX <- apply(mX, 2, mean)
+scaledmX <- mX - meanedmX
+t(scaledmX) %% scaledmX / N
+
+cov(mX)
+
 ## 행렬의 차원은 ncol(), nrow(), attributes()로 알 수 있다.
 ncol(x)
 nrow(x)
